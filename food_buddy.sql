@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `ingredient` (
   `id` int NOT NULL,
   `name` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `ingredient`
@@ -70,7 +70,7 @@ CREATE TABLE `menu` (
   `price` int DEFAULT NULL,
   `image_filename` varchar(255) DEFAULT NULL,
   `restaurant_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `menu`
@@ -97,7 +97,7 @@ CREATE TABLE `menu_ingredient` (
   `id` int NOT NULL,
   `menu_id` int NOT NULL,
   `ingredient_id` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -111,7 +111,7 @@ CREATE TABLE `order` (
   `menu_id` int DEFAULT NULL,
   `preparation_instructions` varchar(255) DEFAULT NULL,
   `ordercol` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -128,7 +128,7 @@ CREATE TABLE `restaurant` (
   `restaurant_type` varchar(45) DEFAULT NULL,
   `rating` varchar(45) DEFAULT NULL,
   `image_filename` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `restaurant`
@@ -154,7 +154,7 @@ CREATE TABLE `users` (
   `address` varchar(255) DEFAULT NULL,
   `mobile` varchar(45) DEFAULT NULL,
   `user_type` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`

@@ -18,7 +18,9 @@ if(isset($_GET['action']) && $_GET['action']!='')
 				$userData['username'] = $row['username'];
 				$userData['password'] = $row['password'];
 				$userData['name'] = $row['name'];
-				$userData['cnic'] = $row['cnic'];
+				$userData['address'] = $row['address'];
+				$userData['mobile'] = $row['mobile'];
+				$userData['user_type'] = $row['user_type'];
 
 				$response["status"] = "true";
 				$response["message"] = "User Details";
