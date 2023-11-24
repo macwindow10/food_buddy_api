@@ -37,13 +37,18 @@ if(isset($_GET['action']) && $_GET['action']!='')
 	}
 	else if($_GET['action'] == "signup")
 	{
-		if ((isset($_GET['username']) && $_GET['username']!="") && (isset($_GET['password']) && $_GET['password']!="") && (isset($_GET['name']) && $_GET['name']!="") && (isset($_GET['cnic']) && $_GET['cnic']!="") && (isset($_GET['address']) && $_GET['address']!="")) 
+		if ((isset($_GET['username']) && $_GET['username']!="") && 
+			(isset($_GET['password']) && $_GET['password']!="") && 
+			(isset($_GET['name']) && $_GET['name']!="") && 
+			(isset($_GET['mobile']) && $_GET['mobile']!="") && 
+			(isset($_GET['address']) && $_GET['address']!="")) 
 		{
 			$username = $_GET['username'];
 			$password = $_GET['password'];
 			$name = $_GET['name'];
-			$cnic = $_GET['cnic'];
+			$mobile = $_GET['mobile'];
 			$address = $_GET['address'];
+			$user_type = $_GET['user_type'];
 			$query = "SELECT * FROM `users` WHERE username='$username'";
 			$result = mysqli_query($con, $query);
 			if ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
@@ -51,7 +56,7 @@ if(isset($_GET['action']) && $_GET['action']!='')
 				$response["status"] = "true";
 				$response["message"] = "Username already exists";
 			} else {
-				$query = "INSERT INTO `users` (username, password, name, cnic, address) VALUES('$username', '$password', '$name', '$cnic', '$address')";
+				$query = "INSERT INTO `users` (username, password, name, mobile, address, user_type) VALUES('$username', '$password', '$name', '$mobile', '$address', '$user_type')";
 				if(mysqli_query($con, $query)) {
 					$response["status"] = "true";
 					$response["message"] = "User created";
