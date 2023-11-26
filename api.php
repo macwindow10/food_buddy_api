@@ -181,10 +181,10 @@ else if ($requestMethod == "POST") {
 			echo $password;
 			$password = hash('sha256', $password);
 			echo $password;
-			$name = $data['name'];
-			$mobile = $data['mobile'];
-			$address = $data['address'];
-			$user_type = $data['user_type'];
+			$name = $data->name;
+			$mobile = $data->mobile;
+			$address = $data->address;
+			$user_type = $data->user_type;
 			$query = "SELECT * FROM `users` WHERE username='$username'";
 			$result = mysqli_query($con, $query);
 			if ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
