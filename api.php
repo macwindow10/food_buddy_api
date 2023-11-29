@@ -165,11 +165,11 @@ if ($requestMethod == "GET") {
 	}
 }
 else if ($requestMethod == "POST") {
-	echo "POST action";
+	// echo "POST action";
 	$data = json_decode(file_get_contents("php://input"));
-	echo($data->action);
+	// echo($data->action);
 	if($data->action == "signup") {
-		echo "====";
+		// echo "====";
 		if (($data->username != "") && 
 			($data->password != "") && 
 			($data->name != "") && 
@@ -178,9 +178,9 @@ else if ($requestMethod == "POST") {
 		{
 			$username = $data->username;
 			$password = $data->password;
-			echo $password;
+			// echo $password;
 			$password = hash('sha256', $password);
-			echo $password;
+			// echo $password;
 			$name = $data->name;
 			$mobile = $data->mobile;
 			$address = $data->address;
@@ -189,11 +189,11 @@ else if ($requestMethod == "POST") {
 			$result = mysqli_query($con, $query);
 			if ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
 			{
-				echo "user already exists";
+				// echo "user already exists";
 				$response["status"] = "true";
 				$response["message"] = "Username already exists";
 			} else {
-				echo "new user";
+				// echo "new user";
 				$query = "INSERT INTO `users` (username, password, name, mobile, address, user_type) VALUES('$username', '$password', '$name', '$mobile', '$address', '$user_type')";
 				echo $query;
 				if(mysqli_query($con, $query)) {
