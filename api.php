@@ -212,12 +212,14 @@ else if ($requestMethod == "POST") {
 	}
 	else if($data->action == "add_restaurant")
 	{
-		if (($data->name!="") && 
+		if (($data->user_id!="") &&
+			($data->name!="") && 
 			($data->contact_number!="") && 
 			($data->address!="") && 
 			($data->city!="") && 
 			($data->restaurant_type!="")) 
 		{
+			$user_id = $data->user_id;
 			$name = $data->name;
 			$contact_number = $data->contact_number;
 			$city = $data->city;
@@ -227,10 +229,10 @@ else if ($requestMethod == "POST") {
 			$result = mysqli_query($con, $query);
 			if ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
 			{
-				$response["status"] = "true";
+				$response["status"] = "false";
 				$response["message"] = "Restaurant already exists";
 			} else {
-				$query = "INSERT INTO `restaurant` (name, contact_number, address, city, restaurant_type, rating, image_filename) VALUES('$name', '$contact_number', '$address', '$city', '$restaurant_type', 1, '')";
+				$query = "INSERT INTO `restaurant` (user_id, name, contact_number, address, city, restaurant_type, rating, image_filename) VALUES('$user_id', '$name', '$contact_number', '$address', '$city', '$restaurant_type', '1', '')";
 				// echo $query;
 				if(mysqli_query($con, $query)) {
 					$response["status"] = "true";
