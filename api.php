@@ -181,6 +181,15 @@ if ($requestMethod == "GET") {
 				if(mysqli_query($con, $query)) {
 					$response["status"] = "true";
 					$response["message"] = "Order placed";
+
+					// insert default location
+					$order_id = mysqli_insert_id($con);
+					$query = "INSERT INTO `order_location` (order_id, latitude, longitude) VALUES('$order_id', '31.553', '74.332')";
+					if(mysqli_query($con, $query)) {
+						$response["status"] = "true";
+						$response["message"] = "Order placed";
+					}
+
 				} else{
 					$response["status"] = "false";
 					$response["message"] = "Error in order placing 2";
