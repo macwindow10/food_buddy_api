@@ -192,6 +192,45 @@ if ($requestMethod == "GET") {
 				$response["message"] = "Error in order placing 1";
 			}
 		}
+		else if($_GET['action'] == "get_orders")
+		{
+			$data = array();
+			if (isset($_GET['user_id'])) {
+				$user_id = $_GET['user_id'];
+				
+				$query = "SELECT o.id, o.date_time, o.order_status, m.id menu_id, m.name menu_name, ifnull(ol.latitude, 33.00) latitude, ifnull(ol.longitude, 73.00) longitude
+					FROM `order` o LEFT JOIN `menu` m ON o.menu_id=m.id 
+					LEFT OUTER JOIN `order_location` ol ON o.id=ol.order_id WHERE o.user_id='$user_id' AND o.order_status!=4";
+				
+				$result = mysqli_query($con, $query);
+				while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+				{
+					$userData['id'] = $row['id'];
+					$userData['date_time'] = $row['date_time'];
+					$userData['order_status'] = $row['order_status'];
+					$userData['menu_id'] = $row['menu_id'];
+					$userData['menu_name'] = $row['menu_name'];
+					$userData['latitude'] = $row['latitude'];
+					$userData['longitude'] = $row['longitude'];
+					
+					$data[]=array("id"=>$row['id'],
+						"date_time"=>$row['date_time'],
+						"order_status"=>$row['order_status'],
+						"menu_id"=>$row['menu_id'],
+						"menu_name"=>$row['menu_name'],
+						"latitude"=>$row['latitude'],
+						"longitude"=>$row['longitude']);
+				} 
+				$response["status"] = "true";
+				$response["message"] = "Order(s) found";
+				$response["orders"] = $data;
+			}
+			else{
+				$response["status"] = "false";
+				$response["message"] = "No order found";
+				$response["orders"] = $data;
+			}
+		}
 		else 
 		{
 			$response["status"] = "false";
