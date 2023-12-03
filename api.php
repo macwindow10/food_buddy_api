@@ -177,18 +177,19 @@ if ($requestMethod == "GET") {
 				$order_status = $_GET['order_status'];
 				$price = $_GET['price'];
 				
-				$query = "INSERT INTO `order` (date_time, menu_id, igredients, preparation_instructions, user_id, order_status, special_dietary_requirements, any_allergy, price) VALUES('$date_time', '$menu_id', '', '$preparation_instructions', '$user_id', '$order_status', '$special_dietary_requirements', '$any_allergy', '$price')";
+				$query = "INSERT INTO `order` (date_time, menu_id, ingredients, preparation_instructions, user_id, order_status, special_dietary_requirements, any_allergy, price) VALUES('$date_time', '$menu_id', '', '$preparation_instructions', '$user_id', '$order_status', '$special_dietary_requirements', '$any_allergy', '$price')";
 				if(mysqli_query($con, $query)) {
 					$response["status"] = "true";
 					$response["message"] = "Order placed";
 				} else{
-					$response["status"] = "true";
-					$response["message"] = "Error in order placing";
+					$response["status"] = "false";
+					$response["message"] = "Error in order placing 2";
+					$response["query"] = $query;
 				}
 			}
 			else{
 				$response["status"] = "false";
-				$response["message"] = "Error in order placing";
+				$response["message"] = "Error in order placing 1";
 			}
 		}
 		else 
