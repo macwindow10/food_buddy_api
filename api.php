@@ -231,6 +231,35 @@ if ($requestMethod == "GET") {
 				$response["orders"] = $data;
 			}
 		}
+		else if($_GET['action'] == "get_order_location")
+		{
+			$data = array();
+			if (isset($_GET['order_id'])) {
+
+				$order_id = $_GET['order_id'];
+				$query = "SELECT latitude, longitude
+					FROM `order_location`
+					WHERE order_id='$order_id'";
+				
+				$result = mysqli_query($con, $query);
+				while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+				{
+					$userData['latitude'] = $row['latitude'];
+					$userData['longitude'] = $row['longitude'];
+					
+					$data[]=array("latitude"=>$row['latitude'],
+						"longitude"=>$row['longitude']);
+				} 
+				$response["status"] = "true";
+				$response["message"] = "Order location found";
+				$response["order_location"] = $data;
+			}
+			else{
+				$response["status"] = "false";
+				$response["message"] = "No order location found";
+				$response["order_location"] = $data;
+			}
+		}
 		else 
 		{
 			$response["status"] = "false";
