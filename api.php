@@ -195,7 +195,7 @@ else if ($requestMethod == "POST") {
 			} else {
 				// echo "new user";
 				$query = "INSERT INTO `users` (username, password, name, mobile, address, user_type) VALUES('$username', '$password', '$name', '$mobile', '$address', '$user_type')";
-				echo $query;
+				// echo $query;
 				if(mysqli_query($con, $query)) {
 					$response["status"] = "true";
 					$response["message"] = "User created";
@@ -208,6 +208,42 @@ else if ($requestMethod == "POST") {
 		else{
 			$response["status"] = "false";
 			$response["message"] = "Error in creating user";
+		}
+	}
+	else if($data->action == "add_restaurant")
+	{
+		if (($data->name!="") && 
+			($data->contact_number!="") && 
+			($data->address!="") && 
+			($data->city!="") && 
+			($data->restaurant_type!="")) 
+		{
+			$name = $data->name;
+			$contact_number = $data->contact_number;
+			$city = $data->city;
+			$address = $data->address;
+			$restaurant_type = $data->restaurant_type;
+			$query = "SELECT * FROM `restaurant` WHERE name='$name'";
+			$result = mysqli_query($con, $query);
+			if ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+			{
+				$response["status"] = "true";
+				$response["message"] = "Restaurant already exists";
+			} else {
+				$query = "INSERT INTO `restaurant` (name, contact_number, address, city, restaurant_type, rating, image_filename) VALUES('$name', '$contact_number', '$address', '$city', '$restaurant_type', 1, '')";
+				// echo $query;
+				if(mysqli_query($con, $query)) {
+					$response["status"] = "true";
+					$response["message"] = "Restaurant created";
+				} else{
+					$response["status"] = "false";
+					$response["message"] = "Error in creating restaurant";
+				}
+			}
+		}
+		else{
+			$response["status"] = "false";
+			$response["message"] = "Error in creating restaurant";
 		}
 	}
 }
