@@ -157,6 +157,40 @@ if ($requestMethod == "GET") {
 				$response["menus"] = $data;
 			}
 		}
+		else if($_GET['action'] == "place_order")
+		{
+			if ((isset($_GET['menu_id']) && $_GET['menu_id']!="") && 
+				(isset($_GET['user_id']) && $_GET['user_id']!="") && 
+				(isset($_GET['date_time']) && $_GET['date_time']!="") && 
+				(isset($_GET['preparation_instructions']) && $_GET['preparation_instructions']!="") && 
+				(isset($_GET['special_dietary_requirements']) && $_GET['special_dietary_requirements']!="") &&
+				(isset($_GET['any_allergy']) && $_GET['any_allergy']!="") && 
+				(isset($_GET['order_status']) && $_GET['order_status']!="") && 
+				(isset($_GET['price']) && $_GET['price']!="")) 
+			{
+				$menu_id = $_GET['menu_id'];
+				$user_id = $_GET['user_id'];
+				$date_time = $_GET['date_time'];
+				$preparation_instructions = $_GET['preparation_instructions'];
+				$special_dietary_requirements = $_GET['special_dietary_requirements'];
+				$any_allergy = $_GET['any_allergy'];
+				$order_status = $_GET['order_status'];
+				$price = $_GET['price'];
+				
+				$query = "INSERT INTO `order` (date_time, menu_id, igredients, preparation_instructions, user_id, order_status, special_dietary_requirements, any_allergy, price) VALUES('$date_time', '$menu_id', '', '$preparation_instructions', '$user_id', '$order_status', '$special_dietary_requirements', '$any_allergy', '$price')";
+				if(mysqli_query($con, $query)) {
+					$response["status"] = "true";
+					$response["message"] = "Order placed";
+				} else{
+					$response["status"] = "true";
+					$response["message"] = "Error in order placing";
+				}
+			}
+			else{
+				$response["status"] = "false";
+				$response["message"] = "Error in order placing";
+			}
+		}
 		else 
 		{
 			$response["status"] = "false";
