@@ -12,7 +12,8 @@ $stripe = new \Stripe\StripeClient($stripeSecretKey);
 //header('Content-Type: application/json');
 
 // Use an existing Customer ID if this is a returning customer.
-$customer = $stripe->customers->create();
+// $customer = $stripe->customers->create();
+$customer = $stripe->customers->retrieve('cus_P9phmQ12SNd6nP', []);
 //echo '4';
 //echo $customer;
 
@@ -25,8 +26,8 @@ $ephemeralKey = $stripe->ephemeralKeys->create([
 //echo $ephemeralKey;
 
 $paymentIntent = $stripe->paymentIntents->create([
-  'amount' => 1099,
-  'currency' => 'eur',
+  'amount' => 1000,
+  'currency' => 'usd',
   'customer' => $customer->id,
   'payment_method_types' => ['card'],
 ]);
