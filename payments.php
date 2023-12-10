@@ -1,42 +1,49 @@
 <?php
 
+//echo '1';
+
 require_once 'stripe-php/init.php';
 require_once 'secrets.php';
 
+//echo '2';
 $stripe = new \Stripe\StripeClient($stripeSecretKey);
 
-function calculateOrderAmount(array $items): int {
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
-    return 1400;
-}
+//echo '3';
+//header('Content-Type: application/json');
 
-header('Content-Type: application/json');
+// Use an existing Customer ID if this is a returning customer.
+$customer = $stripe->customers->create();
+//echo '4';
+//echo $customer;
 
-try {
-    // retrieve JSON from POST body
-    $jsonStr = file_get_contents('php://input');
-    $jsonObj = json_decode($jsonStr);
+$ephemeralKey = $stripe->ephemeralKeys->create([
+  'customer' => $customer->id,
+], [
+  'stripe_version' => '2022-08-01',
+]);
+//echo '5';
+//echo $ephemeralKey;
 
-    // Create a PaymentIntent with amount and currency
-    $paymentIntent = $stripe->paymentIntents->create([
-        'amount' => calculateOrderAmount($jsonObj->items),
-        'currency' => 'usd',
-        // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
-        'automatic_payment_methods' => [
-            'enabled' => true,
-        ],
-    ]);
+$paymentIntent = $stripe->paymentIntents->create([
+  'amount' => 1099,
+  'currency' => 'eur',
+  'customer' => $customer->id,
+  'payment_method_types' => ['card'],
+]);
 
-    $output = [
-        'clientSecret' => $paymentIntent->client_secret,
-    ];
+//echo '6';
+//echo $paymentIntent;
 
-    echo json_encode($output);
-} catch (Error $e) {
-    http_response_code(500);
-    echo json_encode(['error' => $e->getMessage()]);
-}
+$arr = [
+    "paymentIntent" => $paymentIntent->client_secret,
+    "ephemeralKey" => $ephemeralKey->secret,
+    "customer" => $customer->id,
+    "publishableKey" => "pk_test_51OLKPfKCP8INzgGfuvWEZuWQqnhj4ozyUJdPj4nOogAf8XJ4kA621tKS160rb0ZUUoYSTc1hE0suJ7CvxhSInmYr000kxkWt14"
+];
+//echo '7';
+//echo $arr;
+echo json_encode($arr);
 
+http_response_code(200);
 
+?>
