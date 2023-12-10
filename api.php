@@ -360,6 +360,45 @@ else if ($requestMethod == "POST") {
 			$response["message"] = "Error in creating restaurant";
 		}
 	}
+	else if($data->action == "add_menu")
+	{
+		if (($data->user_id!="") &&
+			($data->restaurant_id!="") && 
+			($data->name!="") && 
+			($data->description!="") && 
+			($data->preparation_time!="") && 
+			($data->price!="")) 
+		{
+			$user_id = $data->user_id;
+			$restaurant_id = $data->restaurant_id;
+			$name = $data->name;
+			$description = $data->description;
+			$preparation_time = $data->preparation_time;
+			$price = $data->price;
+			
+			$query = "SELECT * FROM `menu` WHERE name='$name' AND restaurant_id='$restaurant_id'";
+			$result = mysqli_query($con, $query);
+			if ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+			{
+				$response["status"] = "false";
+				$response["message"] = "Menu already exists in restaurant";
+			} else {
+				$query = "INSERT INTO `menu` (name, description, preparation_time, price, image_filename, restaurant_id) VALUES('$name', '$description', '$preparation_time', '$price', 'menu.jpg', '$restaurant_id')";
+				// echo $query;
+				if(mysqli_query($con, $query)) {
+					$response["status"] = "true";
+					$response["message"] = "Menu created";
+				} else{
+					$response["status"] = "false";
+					$response["message"] = "Error in creating menu";
+				}
+			}
+		}
+		else{
+			$response["status"] = "false";
+			$response["message"] = "Error in creating menu";
+		}
+	}
 }
 else {
 	$response["status"] = "false";
