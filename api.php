@@ -452,6 +452,10 @@ else if ($requestMethod == "POST") {
 			if(mysqli_query($con, $query)) {
 				$response["status"] = "true";
 				$response["message"] = "Restaurant review created";
+
+				$query = "UPDATE `order` SET is_feedback_given=1 WHERE id='$order_id'";
+				mysqli_query($con, $query);
+
 			} else{
 				$response["status"] = "false";
 				$response["message"] = "Error in creating restaurant review";
