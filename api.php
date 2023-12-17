@@ -207,9 +207,9 @@ if ($requestMethod == "GET") {
 			if (isset($_GET['user_id'])) {
 				$user_id = $_GET['user_id'];
 				
-				$query = "SELECT o.id, o.date_time, o.order_status, m.id menu_id, m.name menu_name, ifnull(ol.latitude, 33.00) latitude, ifnull(ol.longitude, 73.00) longitude
+				$query = "SELECT o.id, o.date_time, o.order_status, o.is_feedback_given, m.id menu_id, m.name menu_name, ifnull(ol.latitude, 33.00) latitude, ifnull(ol.longitude, 73.00) longitude
 					FROM `order` o LEFT JOIN `menu` m ON o.menu_id=m.id 
-					LEFT OUTER JOIN `order_location` ol ON o.id=ol.order_id WHERE o.user_id='$user_id' AND o.order_status!=4";
+					LEFT OUTER JOIN `order_location` ol ON o.id=ol.order_id WHERE o.user_id='$user_id' AND o.order_status>0";
 				
 				$result = mysqli_query($con, $query);
 				while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
@@ -221,6 +221,7 @@ if ($requestMethod == "GET") {
 					$userData['menu_name'] = $row['menu_name'];
 					$userData['latitude'] = $row['latitude'];
 					$userData['longitude'] = $row['longitude'];
+					$userData['is_feedback_given'] = $row['is_feedback_given'];
 					
 					$data[]=array("id"=>$row['id'],
 						"date_time"=>$row['date_time'],
@@ -228,7 +229,9 @@ if ($requestMethod == "GET") {
 						"menu_id"=>$row['menu_id'],
 						"menu_name"=>$row['menu_name'],
 						"latitude"=>$row['latitude'],
-						"longitude"=>$row['longitude']);
+						"longitude"=>$row['longitude'],
+						"is_feedback_given"=>$row['is_feedback_given']
+					);
 				} 
 				$response["status"] = "true";
 				$response["message"] = "Order(s) found";
@@ -267,6 +270,27 @@ if ($requestMethod == "GET") {
 				$response["status"] = "false";
 				$response["message"] = "No order location found";
 				$response["order_location"] = $data;
+			}
+		}
+		else if($_GET['action'] == "update_order_status")
+		{
+			$data = array();
+			if (isset($_GET['order_id']) && isset($_GET['order_status'])) {
+
+				$order_status = $_GET['order_status'];
+				$order_id = $_GET['order_id'];
+				$query = "UPDATE `order`
+					SET order_status='$order_status'
+					WHERE order_id='$order_id'";
+				
+				$result = mysqli_query($con, $query);
+				
+				$response["status"] = "true";
+				$response["message"] = "Order status updated";
+			}
+			else{
+				$response["status"] = "false";
+				$response["message"] = "Order status could not update";
 			}
 		}
 		else 
@@ -394,9 +418,48 @@ else if ($requestMethod == "POST") {
 				}
 			}
 		}
-		else{
+		else {
 			$response["status"] = "false";
 			$response["message"] = "Error in creating menu";
+		}
+	}
+	else if($data->action == "order_feedback")
+	{
+		if (($data->menu_id!="") &&
+			($data->order_id!="") &&
+			($data->feedback!="") && 
+			($data->restaurant_rating!="") && 
+			($data->delivery_rating!="") && 
+			($data->overall_rating!="")) 
+		{
+			$menu_id = $data->menu_id;
+			$order_id = $data->order_id;
+			$feedback = $data->feedback;
+			$restaurant_rating = $data->restaurant_rating;
+			$delivery_rating = $data->delivery_rating;
+			$overall_rating = $data->overall_rating;
+			
+			$query = "SELECT id FROM `menu` WHERE id='$menu_id'";
+			$result1 = mysqli_query($con, $query);
+			$restaurant_id = 0;
+			while ($row = mysqli_fetch_array($result1, MYSQLI_ASSOC))
+			{
+				$restaurant_id = $row['id'];
+			} 
+
+			$query = "INSERT INTO `restaurant_reviews` (restaurant_id, feedback, rating, delivery_service, overall_experience) VALUES('$restaurant_id', '$feedback', '$restaurant_rating', '$delivery_rating', '$overall_rating')";
+			// echo $query;
+			if(mysqli_query($con, $query)) {
+				$response["status"] = "true";
+				$response["message"] = "Restaurant review created";
+			} else{
+				$response["status"] = "false";
+				$response["message"] = "Error in creating restaurant review";
+			}
+		}
+		else {
+			$response["status"] = "false";
+			$response["message"] = "Error in creating restaurant review";
 		}
 	}
 }

@@ -33,19 +33,23 @@ $rows_count = mysqli_num_rows($result);
             });
 
             function onApprove(id) {
-                console.log('onApprove');
+                console.log(id);
+                console.log('onApprove: ', id);
             }
 
             function onPreparing(id) {
-                console.log('onPreparing');
+                console.log(id);
+                console.log('onPreparing: ', id);
             }
 
             function onOutForDelivery(id) {
-                console.log('onOutForDelivery');
+                console.log(id);
+                console.log('onOutForDelivery: ', id);
             }
 
             function onDelivered(id) {
-                console.log('Delivered');
+                console.log(id);
+                console.log('Delivered: ', id);
             }
         </script>
         <title>Food Buddy - Orders</title>
