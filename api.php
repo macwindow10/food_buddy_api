@@ -293,6 +293,39 @@ if ($requestMethod == "GET") {
 				$response["message"] = "Order status could not update";
 			}
 		}
+		else if($_GET['action'] == "get_restaurant_reviews")
+		{
+			$data = array();
+			if (isset($_GET['restaurant_id'])) {
+				$restaurant_id = $_GET['restaurant_id'];
+				$query = "SELECT * FROM `restaurant_reviews` WHERE restaurant_id=$restaurant_id";
+				$result = mysqli_query($con, $query);
+				while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
+				{
+					$userData['id'] = $row['id'];
+					$userData['feedback'] = $row['feedback'];
+					$userData['rating'] = $row['rating'];
+					$userData['delivery_service'] = $row['delivery_service'];
+					$userData['overall_experience'] = $row['overall_experience'];
+					$userData['dt'] = $row['dt'];
+
+					$data[]=array("id"=>$row['id'],
+						"feedback"=>$row['feedback'],
+						"rating"=>$row['rating'],
+						"delivery_service"=>$row['delivery_service'],
+						"overall_experience"=>$row['overall_experience'],
+						"dt"=>$row['dt']);
+				} 
+				$response["status"] = "true";
+				$response["message"] = "Restaurant review found";
+				$response["restaurant_reviews"] = $data;
+			}
+			else{
+				$response["status"] = "false";
+				$response["message"] = "No restaurant review found";
+				$response["restaurant_reviews"] = $data;
+			}
+		}
 		else 
 		{
 			$response["status"] = "false";
