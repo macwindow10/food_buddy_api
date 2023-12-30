@@ -33,8 +33,15 @@ $rows_count = mysqli_num_rows($result);
             });
 
             function onApprove(id) {
-                console.log(id);
+                console.log("order id: ", id);
                 console.log('onApprove: ', id);
+                $.ajax({
+                type: "GET",
+                url: "api.php?action=update_order_status&order_id=" + id + "&order_status=2",
+                success: function(data){
+                    console.log(data);
+                }
+                });
             }
 
             function onPreparing(id) {
