@@ -281,7 +281,7 @@ if ($requestMethod == "GET") {
 				$order_id = $_GET['order_id'];
 				$query = "UPDATE `order`
 					SET order_status='$order_status'
-					WHERE order_id='$order_id'";
+					WHERE id='$order_id'";
 				
 				$result = mysqli_query($con, $query);
 				

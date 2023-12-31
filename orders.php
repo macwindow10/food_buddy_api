@@ -37,26 +37,51 @@ $rows_count = mysqli_num_rows($result);
                 console.log('onApprove: ', id);
                 $.ajax({
                 type: "GET",
-                url: "api.php?action=update_order_status&order_id=" + id + "&order_status=2",
+                url: "api.php?action=update_order_status&order_id=" + id + "&order_status=1",
                 success: function(data){
                     console.log(data);
+                    location.reload();
                 }
                 });
             }
 
             function onPreparing(id) {
-                console.log(id);
+                console.log("order id: ", id);
                 console.log('onPreparing: ', id);
+                $.ajax({
+                type: "GET",
+                url: "api.php?action=update_order_status&order_id=" + id + "&order_status=2",
+                success: function(data){
+                    console.log(data);
+                    location.reload();
+                }
+                });
             }
 
             function onOutForDelivery(id) {
-                console.log(id);
+                console.log("order id: ", id);
                 console.log('onOutForDelivery: ', id);
+                $.ajax({
+                type: "GET",
+                url: "api.php?action=update_order_status&order_id=" + id + "&order_status=3",
+                success: function(data){
+                    console.log(data);
+                    location.reload();
+                }
+                });
             }
 
             function onDelivered(id) {
-                console.log(id);
-                console.log('Delivered: ', id);
+                console.log("order id: ", id);
+                console.log('onDelivered: ', id);
+                $.ajax({
+                type: "GET",
+                url: "api.php?action=update_order_status&order_id=" + id + "&order_status=4",
+                success: function(data){
+                    console.log(data);
+                    location.reload();
+                }
+                });
             }
         </script>
         <title>Food Buddy - Orders</title>
@@ -67,9 +92,10 @@ $rows_count = mysqli_num_rows($result);
         <select>
             <option value=-1 selected>All</option>
             <option value=0 >Received</option>
-            <option value=1 >Preparing</option>
-            <option value=2 >Out for Delivery</option>
-            <option value=3 >Delivered</option>
+            <option value=1 >Approved</option>
+            <option value=2 >Preparing</option>
+            <option value=3 >Out for Delivery</option>
+            <option value=4 >Delivered</option>
         </select>
         <table class="striped">
             <tr class="header">
